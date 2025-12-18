@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Nexus Real-Time Monitor</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; background: #f0f2f5; }
+        .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); max-width: 400px; margin-top: 20px;}
+        h2 { color: #333; }
+        #log { font-family: monospace; color: #007bff; }
+        .status-box { padding: 10px; background: #e8f5e9; border: 1px solid #c8e6c9; border-radius: 4px; color: #2e7d32; }
+    </style>
+</head>
+<body>
+    <h2>🏭 Nexus Industrial IoT Monitor</h2>
+    <div class="status-box" id="connectionStatus">Connecting...</div>
+
+    <div class="card">
+        <h3>Live Sensor Feed</h3>
+        <div id="log">Waiting for data...</div>
+    </div>
+
+    <script>
+        // Connect to the WebSocket
+        var ws = new WebSocket("ws://127.0.0.1:8000/ws");
+
+        ws.onopen = function() {
+            document.getElementById("connectionStatus").innerText = "✅ Connected to System";
+        };
+
+        ws.onmessage = function(event) {
+            var data = JSON.parse(event.data);
+            var display = `
+                Device: ${data.device_id} <br>
+                Temp: <b>${data.temperature}°C</b> <br>
+                Status: ${data.status} <br>
+                -------------------------
+            `;
+            // Add new data to the top
+            var log = document.getElementById("log");
+            log.innerHTML = display + log.innerHTML;
+        };
+    </script>
+</body>
+</html>
