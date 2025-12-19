@@ -38,6 +38,7 @@ The system is composed of three decoupled services:
 Create a `.env` file in the root directory:
 ```bash
 RABBITMQ_URL=amqps://your-user:password@host/vhost
+```
 
 ### 2. Start Ingestion Service (FastAPI)
 
@@ -53,7 +54,7 @@ uvicorn app.main:app --reload --port 8000
 . API Docs: http://localhost:8000/docs
 . WebSocket: ws://localhost:8000/ws
 
-3. Start Core Service (Django)
+### 3. Start Core Service (Django)
 Open a new terminal:
 
 cd nexus_core
@@ -70,7 +71,7 @@ python manage.py runserver 8001
 ⚠️ Important: To save data to the database, run the consumer in a separate terminal:
 python manage.py start_consumer
 
-4. Start Dashboard (React)
+### 4. Start Dashboard (React)
 
 Open a new terminal:
 cd nexus_dashboard
@@ -78,3 +79,26 @@ npm install
 npm run dev
 
 . Dashboard: http://localhost:5173
+
+🐳 How to Run with Docker
+
+If you have Docker Desktop installed, you can launch the entire system with one command:
+docker-compose up --build
+
+This will spin up:
+. nexus-ingest on Port 8000
+. nexus-core on Port 8001
+. nexus-dashboard on Port 5173
+
+🧪 Testing the Pipeline
+1. Login: Go to http://localhost:5173 and login with your Django superuser credentials.
+
+2. Simulate Data: Open the FastAPI docs (http://localhost:8000/docs) and send a POST request to /ingest:
+
+{
+  "device_id": "sensor-01",
+  "temperature": 65.5,
+  "status": "active"
+}
+
+3. Verify: Watch the React Dashboard update instantly!
