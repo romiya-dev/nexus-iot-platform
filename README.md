@@ -39,7 +39,7 @@ Create a `.env` file in the root directory:
 ```bash
 RABBITMQ_URL=amqps://your-user:password@host/vhost
 
-2. Start Ingestion Service (FastAPI)
+### 2. Start Ingestion Service (FastAPI)
 
 cd nexus_ingest
 python -m venv venv
