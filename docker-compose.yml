@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  # 1. Ingestion Service (FastAPI)
+  ingest:
+    build: ./nexus_ingest
+    ports:
+      - "8000:8000"
+    environment:
+      - RABBITMQ_URL=${RABBITMQ_URL}
+    volumes:
+      - ./nexus_ingest:/app  # Hot-Reloading enabled
+
+  # 2. Core Service (Django)
+  core:
+    build: ./nexus_core
+    ports:
+      - "8001:8001"
+    environment:
+      - RABBITMQ_URL=${RABBITMQ_URL}
+    volumes:
+      - ./nexus_core:/app
+    depends_on:
+      - ingest
+
+  # 3. Dashboard (React)
+  dashboard:
+    build: ./nexus_dashboard
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./nexus_dashboard:/app
+      - /app/node_modules
+    depends_on:
+      - core
