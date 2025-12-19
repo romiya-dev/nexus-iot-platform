@@ -38,3 +38,43 @@ The system is composed of three decoupled services:
 Create a `.env` file in the root directory:
 ```bash
 RABBITMQ_URL=amqps://your-user:password@host/vhost
+
+2. Start Ingestion Service (FastAPI)
+
+cd nexus_ingest
+python -m venv venv
+# Windows:
+venv\Scripts\activate
+# Mac/Linux: source venv/bin/activate
+
+pip install -r requirements.txt
+uvicorn app.main:app --reload --port 8000
+
+. API Docs: http://localhost:8000/docs
+. WebSocket: ws://localhost:8000/ws
+
+3. Start Core Service (Django)
+Open a new terminal:
+
+cd nexus_core
+python -m venv venv
+# Windows:
+venv\Scripts\activate
+
+pip install -r requirements.txt
+python manage.py migrate
+python manage.py runserver 8001
+
+. Admin Panel: http://localhost:8001/admin
+
+⚠️ Important: To save data to the database, run the consumer in a separate terminal:
+python manage.py start_consumer
+
+4. Start Dashboard (React)
+
+Open a new terminal:
+cd nexus_dashboard
+npm install
+npm run dev
+
+. Dashboard: http://localhost:5173
