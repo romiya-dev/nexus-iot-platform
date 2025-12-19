@@ -81,7 +81,7 @@ npm run dev
 
 . Dashboard: http://localhost:5173
 
-🐳 How to Run with Docker
+### 🐳 How to Run with Docker
 
 If you have Docker Desktop installed, you can launch the entire system with one command:
 docker-compose up --build
@@ -91,7 +91,7 @@ This will spin up:
 . nexus-core on Port 8001
 . nexus-dashboard on Port 5173
 
-🧪 Testing the Pipeline
+### 🧪 Testing the Pipeline
 1. Login: Go to http://localhost:5173 and login with your Django superuser credentials.
 
 2. Simulate Data: Open the FastAPI docs (http://localhost:8000/docs) and send a POST request to /ingest:
